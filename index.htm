@@ -244,8 +244,11 @@
     <header class="banner" role="banner" aria-label="Miracles banner">
       <div class="row">
         <div class="logo" aria-label="Site logo">
-          <!-- Use the provided file name if saved alongside this HTML -->
-          <img src="Logo2.png" alt="Miracles logo" />
+          <!-- Robust logo element: tries Logo2.png first, script adds fallbacks if needed -->
+          <picture>
+            <source srcset="assets/logo.svg" type="image/svg+xml">
+            <img id="siteLogo" src="Logo2.png" alt="Miracles logo" height="64" decoding="async" fetchpriority="high" />
+          </picture>
         </div>
 
         <div class="clock" id="clock" aria-live="polite">--:--:--</div>
@@ -369,6 +372,34 @@
 
     // Optional: resume context if user hovers before click (best-effort)
     window.addEventListener('mousemove', unlock, { once:true, passive:true });
+  </script>
+
+  <!-- Robust logo fallback loader (keeps UI identical, fixes path/case issues on GitHub Pages) -->
+  <script>
+    (() => {
+      const imgEl = document.getElementById('siteLogo');
+      if (!imgEl) return;
+
+      const candidates = [
+        'Logo2.png','logo2.png',
+        'logo.png','Logo.png',
+        'assets/logo.png','assets/Logo.png','assets/logo.svg',
+        'images/logo.png','images/Logo.png','images/logo.svg',
+        'img/logo.png','img/Logo.png','logo.svg'
+      ];
+
+      function tryLoad(i){
+        if (i >= candidates.length) return;
+        const url = new URL(candidates[i], document.baseURI).toString();
+        const test = new Image();
+        test.onload = () => { imgEl.src = url; };
+        test.onerror = () => tryLoad(i + 1);
+        // cache-bust only on probe to avoid sticky 404s
+        test.src = url + (url.includes('?') ? '&' : '?') + 'probe=' + Date.now();
+      }
+
+      imgEl.addEventListener('error', () => tryLoad(0), { once:true });
+    })();
   </script>
 </body>
 </html>
