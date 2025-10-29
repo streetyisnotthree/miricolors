@@ -1,398 +1,571 @@
 <!doctype html>
-<html lang="en-US" dir="ltr">
+<html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <title>miricolors.net</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Miricolors — a retro-modern, glassy XP/Vista-flavored webcomic hub." />
-    <meta name="theme-color" content="#f0f0f0" />
-    <meta name="color-scheme" content="light" />
+    <meta name="description" content="miricolors.net — a glassy, early-web inspired reading experience." />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' fill='%23fff'/%3E%3Cpath d='M16 32h96v64H16z' fill='%23000' opacity='.06'/%3E%3Ctext x='64' y='76' font-family='Verdana' font-size='44' text-anchor='middle' fill='%23000' opacity='.4'%3EM%3C/text%3E%3C/svg%3E" />
+    <link rel="canonical" href="https://miricolors.net/" />
 
-    <!-- Icons (placeholders) -->
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' fill='%23e6e6e6'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='34' fill='%23000'%3E★%3C/text%3E%3C/svg%3E" />
     <style>
-      :root{
-        --bg-0:#ffffff;
-        --bg-1:#f5f5f5;
-        --bg-2:#eeeeee;
-        --bg-3:#e3e3e3;
-        --ink-0:#000000;
-        --ink-1:#333333;
-        --ink-2:#555555;
-        --ink-3:#777777;
-
-        /* Glass gradients (grayscale) */
-        --glass-hi: rgba(255,255,255,0.75);
-        --glass-mid: rgba(240,240,240,0.55);
-        --glass-lo: rgba(220,220,220,0.35);
-        --glass-stroke: rgba(0,0,0,0.12);
-
-        --shadow-soft: 0 10px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
-        --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.1);
-
-        --radius-lg: 16px;
-        --radius-md: 12px;
-        --radius-sm: 8px;
-
-        --xp-highlight: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.45) 42%, rgba(255,255,255,0.0) 100%);
-        --xp-panel: linear-gradient(180deg, var(--glass-hi) 0%, var(--glass-mid) 40%, var(--glass-lo) 100%);
+      :root {
+        --bg-0: #ffffff;
+        --bg-1: #f2f2f2;
+        --bg-2: #e6e6e6;
+        --bg-3: #d9d9d9;
+        --ink-0: #000000;
+        --ink-1: #333333;
+        --ink-2: #666666;
+        --ink-3: #999999;
+        --glass: rgba(255, 255, 255, 0.6);
+        --glass-strong: rgba(255, 255, 255, 0.75);
+        --shadow-1: 0 12px 24px rgba(0,0,0,0.12);
+        --shadow-2: 0 6px 16px rgba(0,0,0,0.10);
+        --border-1: 1px solid rgba(0,0,0,0.10);
+        --border-2: 1px solid rgba(0,0,0,0.15);
+        --radius-outer: 14px;
+        --radius-inner: 10px;
+        --radius-button: 8px;
+        --maxw: 1080px;
       }
 
       * { box-sizing: border-box; }
-      html, body { height: 100%; }
-      body{
-        margin:0;
-        color:var(--ink-1);
-        font: 14px/1.4 "Trebuchet MS", Tahoma, Verdana, Segoe UI, system-ui, -apple-system, sans-serif;
-        background:
-          radial-gradient(80% 60% at 50% -10%, rgba(255,255,255,0.8), rgba(255,255,255,0)) no-repeat,
-          linear-gradient(135deg, #ffffff, #f2f2f2 35%, #eaeaea 70%, #f7f7f7);
-      }
-
-      /* Top title bar (XP/Vista glass look) */
-      .topbar{
-        position: sticky;
-        top:0;
-        z-index: 50;
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        background: var(--xp-panel);
-        border-bottom: 1px solid var(--glass-stroke);
-        box-shadow: var(--shadow-soft);
-      }
-      .topbar-inner{
-        max-width: 1160px;
-        margin: 0 auto;
-        padding: 10px 16px;
-        display:flex;
-        align-items:center;
-        gap: 12px;
-      }
-      .logo{
-        display:flex;
-        align-items:center;
-        gap:10px;
-        user-select:none;
-      }
-      .logo-badge{
-        width:28px;
-        height:28px;
-        border-radius: 6px;
-        background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 60%, #dcdcdc 100%);
-        border:1px solid var(--glass-stroke);
-        box-shadow: var(--shadow-inset), 0 2px 8px rgba(0,0,0,0.08);
-        display:grid;
-        place-items:center;
-        color:#000;
-        font-weight:700;
-      }
-      .logo-title{
-        font-weight:700;
-        color:var(--ink-0);
-        letter-spacing: 0.3px;
-        text-shadow: 0 1px 0 rgba(255,255,255,0.65);
-      }
-
-      /* MP3-style nav bar */
-      .mp3nav-wrap{
-        width:100%;
-        background: linear-gradient(180deg, #fbfbfb 0%, #efefef 60%, #e7e7e7 100%);
-        border-top: 1px solid rgba(255,255,255,0.7);
-        border-bottom: 1px solid rgba(0,0,0,0.08);
-        box-shadow: var(--shadow-inset);
-      }
-      .mp3nav{
-        max-width: 1160px;
-        margin: 0 auto;
-        padding: 10px 16px 14px;
-        display:flex;
-        align-items:center;
-        gap: 10px;
-      }
-      .mp3-shell{
-        flex:1;
-        display:flex;
-        align-items:center;
-        gap: 8px;
-        padding: 10px 12px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #fefefe 0%, #f3f3f3 55%, #e6e6e6 100%);
-        border:1px solid var(--glass-stroke);
-        box-shadow: var(--shadow-soft), var(--shadow-inset);
-        position: relative;
-      }
-      .mp3-gloss{
-        pointer-events: none;
-        position: absolute;
-        left:8px; right:8px; top:6px;
-        height: 40%;
-        border-radius: 999px;
-        background: var(--xp-highlight);
-        filter: blur(0.2px);
-      }
-      .mp3-btn{
-        position: relative;
-        isolation: isolate;
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
-        padding: 8px 14px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 55%, #e9e9e9 100%);
-        border:1px solid rgba(0,0,0,0.14);
-        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset,
-                    0 -1px 0 rgba(0,0,0,0.04) inset,
-                    0 2px 6px rgba(0,0,0,0.08);
+      html, body {
+        margin: 0; padding: 0;
         color: var(--ink-1);
-        text-decoration: none;
-        font-weight:600;
+        background:
+          linear-gradient(180deg, var(--bg-0), var(--bg-1) 30%, var(--bg-2) 70%, var(--bg-3) 100%);
+        font-family: "Segoe UI", Tahoma, Verdana, sans-serif;
+        min-height: 100%;
+      }
+
+      .page {
+        max-width: var(--maxw);
+        margin: 28px auto 56px;
+        padding: 0 16px;
+      }
+
+      /* Glassy header with XP/Vista sheen */
+      header.site-head {
+        position: sticky; top: 12px;
+        z-index: 50;
+        border-radius: var(--radius-outer);
+        border: var(--border-2);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.88), rgba(255,255,255,0.64)),
+          linear-gradient(180deg, #ffffff, #e9e9e9);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--shadow-1);
+        overflow: hidden;
+      }
+
+      /* MP3 player-style nav bar */
+      .mp3bar {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border-bottom: var(--border-1);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.35));
+      }
+
+      .brand {
+        display: flex; align-items: center; gap: 10px;
+        padding: 6px 8px;
+      }
+      .brand-logo {
+        width: 26px; height: 26px;
+        border-radius: 6px;
+        background:
+          linear-gradient(180deg, #ffffff, #e1e1e1);
+        border: var(--border-2);
+        box-shadow: inset 0 2px 0 rgba(255,255,255,0.9), inset 0 -2px 0 rgba(0,0,0,0.05);
+      }
+      .brand-title {
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        color: var(--ink-0);
+        text-shadow: 0 1px 0 #fff;
+      }
+
+      /* Equalizer pulse purely grayscale */
+      .eq {
+        display: inline-flex; gap: 2px; margin-left: 8px;
+        height: 12px; align-items: flex-end;
+      }
+      .eq span {
+        width: 3px; background: #666; display: inline-block;
+        animation: eqIdle 1200ms ease-in-out infinite;
+        border-radius: 1px;
+      }
+      .eq span:nth-child(2){ animation-delay: 120ms; }
+      .eq span:nth-child(3){ animation-delay: 240ms; }
+      .eq span:nth-child(4){ animation-delay: 360ms; }
+      .eq span:nth-child(5){ animation-delay: 480ms; }
+      @keyframes eqIdle {
+        0%, 100% { height: 20%; }
+        50% { height: 85%; }
+      }
+
+      /* Nav buttons styled like MP3 transport buttons */
+      nav.mp3-controls {
+        display: flex; flex-wrap: wrap; gap: 6px;
+        padding: 4px 0;
+      }
+      .btn {
+        appearance: none; border: 0;
+        color: var(--ink-1);
+        background:
+          linear-gradient(180deg, #ffffff, #dcdcdc);
+        border: var(--border-2);
+        border-radius: var(--radius-button);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.9),
+          inset 0 -1px 0 rgba(0,0,0,0.05),
+          0 2px 4px rgba(0,0,0,0.08);
+        padding: 6px 10px;
+        font-weight: 600;
         letter-spacing: 0.2px;
         cursor: pointer;
-        transition: transform 80ms ease, filter 120ms ease, background 160ms ease;
-        user-select:none;
+        transition: transform 80ms ease, box-shadow 120ms ease, background 200ms ease;
+        user-select: none;
       }
-      .mp3-btn:hover{
+      .btn:hover {
         transform: translateY(-1px);
-        filter: brightness(1.03);
+        background:
+          linear-gradient(180deg, #ffffff, #e6e6e6);
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,1),
+          inset 0 -1px 0 rgba(0,0,0,0.06),
+          0 6px 12px rgba(0,0,0,0.12);
       }
-      .mp3-btn:active{
+      .btn:active {
         transform: translateY(0);
-        filter: brightness(0.98);
-      }
-      .mp3-btn .glyph{
-        width: 16px; height:16px;
-        border-radius: 50%;
-        background: radial-gradient(circle at 30% 30%, #fff, #e6e6e6 60%, #dcdcdc);
-        border: 1px solid rgba(0,0,0,0.1);
-        box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset,
-                    0 -1px 0 rgba(0,0,0,0.06) inset;
+        background:
+          linear-gradient(180deg, #f2f2f2, #d2d2d2);
+        box-shadow:
+          inset 0 2px 4px rgba(0,0,0,0.12);
       }
 
-      .star-launcher{
-        margin-left:auto;
-        display:inline-flex;
-        align-items:center;
-        gap:8px;
+      /* Star quick menu button */
+      .star-wrap {
+        display: flex; align-items: center; gap: 8px;
+      }
+      .star-btn {
+        width: 34px; height: 34px;
+        display: grid; place-items: center;
+        font-size: 18px; line-height: 1;
+      }
+
+      /* Transport screen strip (like an old MP3 display) */
+      .screen {
+        grid-column: 1 / -1;
+        margin: 0 10px 10px;
+        border: var(--border-2);
+        border-radius: 10px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.55)),
+          linear-gradient(180deg, #f7f7f7, #e1e1e1);
         padding: 8px 12px;
-        border-radius: 12px;
-        background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 55%, #e8e8e8 100%);
-        border:1px solid rgba(0,0,0,0.14);
-        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset,
-                    0 -1px 0 rgba(0,0,0,0.04) inset,
-                    0 2px 6px rgba(0,0,0,0.08);
-        cursor:pointer;
-        color: var(--ink-1);
-        font-weight:600;
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 12px;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(0,0,0,0.06);
       }
-      .star-launcher .star{
-        font-size:16px;
-        filter: drop-shadow(0 1px 0 rgba(255,255,255,0.6));
+      .screen .marquee {
+        overflow: hidden; white-space: nowrap;
+        color: var(--ink-2);
+        font-weight: 600;
+        letter-spacing: 0.3px;
+      }
+      .marquee span {
+        display: inline-block;
+        padding-left: 100%;
+        animation: scroll 14s linear infinite;
+      }
+      @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-100%); }
       }
 
-      /* Layout */
-      .container{
-        max-width: 1160px;
-        margin: 24px auto;
-        padding: 0 16px 56px;
+      /* Main layout: left sidebar (Chapters), center (Latest), right (Coming Soon) */
+      .main {
         display: grid;
-        grid-template-columns: 1fr 320px;
+        grid-template-columns: 240px 1fr 280px;
         gap: 18px;
+        margin-top: 16px;
       }
-      @media (max-width: 980px){
-        .container{
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .panel{
-        position: relative;
-        border-radius: var(--radius-lg);
-        background: var(--xp-panel);
-        border:1px solid var(--glass-stroke);
-        box-shadow: var(--shadow-soft), var(--shadow-inset);
-        overflow: clip;
-      }
-      .panel .panel-titlebar{
-        padding: 10px 14px;
-        font-weight:700;
-        color: var(--ink-0);
-        text-shadow: 0 1px 0 rgba(255,255,255,0.65);
-        border-bottom: 1px solid rgba(0,0,0,0.06);
-        background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,245,0.8));
-      }
-      .panel .panel-body{
-        padding: 16px;
+      @media (max-width: 980px) {
+        .main { grid-template-columns: 1fr; }
       }
 
-      /* Center main panel */
-      .latest{
-        min-height: 380px;
+      .panel {
+        border-radius: var(--radius-outer);
+        border: var(--border-2);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.52)),
+          linear-gradient(180deg, #ffffff, #e9e9e9);
+        backdrop-filter: blur(8px);
+        box-shadow: var(--shadow-2);
+        overflow: hidden;
       }
-      .empty-note{
-        margin: 10px 0 0;
-        color: var(--ink-3);
-        font-style: italic;
-        background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(235,235,235,0.6));
-        border: 1px dashed rgba(0,0,0,0.18);
-        border-radius: var(--radius-md);
-        padding: 14px 12px;
+      .panel-header {
+        padding: 10px 12px;
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+        border-bottom: var(--border-1);
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .panel-header h2 {
+        margin: 0; font-size: 14px; letter-spacing: 0.5px; text-transform: uppercase;
+        color: var(--ink-2);
+      }
+      .panel-body { padding: 12px; }
+
+      /* Chapters list (empty for now) */
+      .chapter-list, .log-list {
+        list-style: none; margin: 0; padding: 0; display: grid; gap: 8px;
+        min-height: 80px;
       }
 
-      /* Sidebar */
-      .sidebar .list{
-        list-style: none;
-        margin: 10px 0 0;
-        padding: 0;
-        border-radius: var(--radius-md);
-        background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(236,236,236,0.6));
-        border:1px solid rgba(0,0,0,0.12);
-        box-shadow: var(--shadow-inset);
+      /* Latest Chapter center card (empty content) */
+      .latest-card {
+        display: grid;
+        gap: 12px;
+      }
+      .latest-hero {
+        height: 200px;
+        border-radius: var(--radius-inner);
+        border: var(--border-1);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.35)),
+          linear-gradient(135deg, #f9f9f9 0%, #e9e9e9 50%, #dcdcdc 100%);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(0,0,0,0.05);
+      }
+
+      /* Coming Soon card (intentionally no content) */
+      .comingsoon {
+        display: grid; gap: 10px;
+      }
+      .coming-tidbit {
         min-height: 120px;
-        display:flex;
-        align-items:center;
-        justify-content:center;
+        border-radius: var(--radius-inner);
+        border: var(--border-1);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.4)),
+          linear-gradient(180deg, #f6f6f6, #e2e2e2);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 -1px 0 rgba(0,0,0,0.05);
+      }
+
+      footer.site-foot {
+        margin-top: 22px;
+        padding: 14px;
+        border-radius: var(--radius-outer);
+        border: var(--border-2);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.5)),
+          linear-gradient(180deg, #ffffff, #eaeaea);
+        text-align: center;
         color: var(--ink-3);
-        font-style: italic;
       }
 
-      /* Coming soon teaser box */
-      .teaser{
-        margin-top: 18px;
-      }
-
-      /* Modal window (XP/Vista style) */
-      .modal-backdrop{
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.2);
-        backdrop-filter: blur(2px);
-        -webkit-backdrop-filter: blur(2px);
-        display:none;
-        align-items: center;
-        justify-content: center;
+      /* Star menu popup (XP/Vista window feel) */
+      .modal {
+        position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+        background: rgba(0,0,0,0.25);
         z-index: 100;
       }
-      .modal{
-        width: min(720px, calc(100vw - 40px));
-        border-radius: 14px;
-        background: var(--xp-panel);
-        border:1px solid var(--glass-stroke);
-        box-shadow: var(--shadow-soft);
+      .modal[aria-hidden="false"] { display: flex; }
+      .window {
+        width: min(720px, 92vw);
+        border-radius: 12px;
         overflow: hidden;
-        position: relative;
+        border: var(--border-2);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6)),
+          linear-gradient(180deg, #ffffff, #e7e7e7);
+        box-shadow: 0 24px 48px rgba(0,0,0,0.18);
       }
-      .modal-titlebar{
-        display:flex;
-        align-items:center;
-        justify-content: space-between;
+      .window-titlebar {
         padding: 10px 12px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(240,240,240,0.85));
-        border-bottom: 1px solid rgba(0,0,0,0.08);
-        cursor: move;
+        background:
+          linear-gradient(180deg, #fdfdfd, #dcdcdc);
+        border-bottom: var(--border-1);
+        display: flex; align-items: center; justify-content: space-between;
       }
-      .modal-title{
-        font-weight:700;
-        color: var(--ink-0);
+      .window-title {
+        margin: 0; font-weight: 700; color: var(--ink-1); letter-spacing: 0.4px;
       }
-      .modal-actions{
-        display:flex;
-        gap: 8px;
+      .win-actions { display: flex; gap: 6px; }
+      .icon-btn {
+        width: 28px; height: 28px; border-radius: 6px; border: var(--border-2);
+        background: linear-gradient(180deg, #ffffff, #dcdcdc);
+        display: grid; place-items: center; cursor: pointer;
+        box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 -1px 0 rgba(0,0,0,0.05);
       }
-      .win-btn{
-        width: 28px; height: 22px;
-        border-radius: 5px;
-        background: linear-gradient(180deg, #ffffff, #eaeaea);
-        border:1px solid rgba(0,0,0,0.15);
-        box-shadow: var(--shadow-inset);
-        display:grid; place-items:center;
-        cursor:pointer;
+      .window-body { padding: 12px; display: grid; gap: 12px; }
+      .tabs { display: flex; gap: 6px; }
+      .tab {
+        padding: 6px 10px; border-radius: 8px; border: var(--border-2);
+        background: linear-gradient(180deg, #ffffff, #e3e3e3);
+        cursor: default; font-weight: 600; color: var(--ink-2);
       }
-      .modal-content{
-        display:grid;
-        grid-template-columns: 200px 1fr;
-        min-height: 280px;
+      .columns {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
       }
-      @media (max-width: 640px){
-        .modal-content{ grid-template-columns: 1fr; }
+      @media (max-width: 680px) {
+        .columns { grid-template-columns: 1fr; }
       }
-      .modal-nav{
-        border-right:1px solid rgba(0,0,0,0.08);
-        padding: 12px;
-        background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(238,238,238,0.6));
-      }
-      .mod-tab{
-        display:block;
-        width:100%;
-        text-align:left;
-        padding: 10px 12px;
-        margin-bottom: 8px;
-        border-radius: 10px;
-        background: linear-gradient(180deg, #ffffff, #f0f0f0);
-        border:1px solid rgba(0,0,0,0.12);
-        font-weight:600;
-        color: var(--ink-1);
-        cursor:pointer;
-      }
-      .mod-tab.active{
-        background: linear-gradient(180deg, #f7f7f7, #e9e9e9);
-      }
-      .mod-body{
-        padding: 16px;
-      }
-      .placeholder-box{
-        border-radius: 10px;
-        border: 1px dashed rgba(0,0,0,0.2);
-        min-height: 160px;
-        display:flex; align-items:center; justify-content:center;
-        color: var(--ink-3);
-        font-style: italic;
-        background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(235,235,235,0.55));
+      .well {
+        border: var(--border-1); border-radius: 8px; background: rgba(255,255,255,0.6);
+        min-height: 120px; padding: 10px;
       }
 
-      /* Tiny sparkle visuals on hover */
-      .sparkle {
-        position: absolute;
-        width: 8px; height: 8px;
-        pointer-events: none;
-        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(220,220,220,0.9) 50%, rgba(180,180,180,0.0) 65%);
-        border-radius: 50%;
-        animation: sparkle-pop 420ms ease-out forwards;
-        filter: drop-shadow(0 0 2px rgba(255,255,255,0.9));
-        z-index: 2;
-      }
-      @keyframes sparkle-pop {
-        0% { transform: scale(0.2); opacity: 0; }
-        35%{ transform: scale(1); opacity: 1; }
-        100%{ transform: scale(0.2) translateY(-6px); opacity: 0; }
-      }
-      .visually-hidden{
-        position:absolute !important;
-        width:1px; height:1px;
-        padding:0; margin:-1px;
-        overflow:hidden; clip: rect(0,0,0,0);
-        white-space: nowrap; border:0;
+      /* A11y: reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        .eq span { animation: none; height: 50%; }
+        .marquee span { animation: none; }
+        .btn, .screen { transition: none; }
       }
     </style>
   </head>
   <body>
-    <!-- Top glass title bar -->
-    <header class="topbar">
-      <div class="topbar-inner">
-        <div class="logo" aria-label="Site">
-          <div class="logo-badge">M</div>
-          <div>
-            <div class="logo-title">miricolors.net</div>
-            <div style="font-size:12px; color:var(--ink-3)">retro x glass x minimal</div>
+    <div class="page">
+      <header class="site-head" role="banner" aria-label="Site header">
+        <div class="mp3bar">
+          <div class="brand">
+            <div class="brand-logo" aria-hidden="true"></div>
+            <div class="brand-title">miricolors.net</div>
+            <div class="eq" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <nav class="mp3-controls" aria-label="Primary">
+            <button class="btn nav-btn" data-link="home">Home</button>
+            <button class="btn nav-btn" data-link="read">Read</button>
+            <button class="btn nav-btn" data-link="archive">Archive</button>
+            <button class="btn nav-btn" data-link="new-reader">New Reader?</button>
+            <button class="btn nav-btn" data-link="map">Map</button>
+            <button class="btn nav-btn" data-link="log">Log</button>
+            <button class="btn nav-btn" data-link="search">Search</button>
+            <button class="btn nav-btn" data-link="forums">Forums</button>
+            <button class="btn nav-btn" data-link="credits">Credits</button>
+          </nav>
+
+          <div class="star-wrap">
+            <button class="btn star-btn" id="starMenuBtn" aria-haspopup="dialog" aria-controls="starMenu" title="Quick chapters/logs">✦</button>
+          </div>
+
+          <div class="screen" aria-hidden="true">
+            <div class="marquee"><span>miricolors.net — glassy early-web vibes • Windows XP/Vista sheen • grayscale gradients • hover for twinkles … </span></div>
+          </div>
+        </div>
+      </header>
+
+      <main class="main" role="main">
+        <!-- LEFT: Chapters (empty list, no items added yet) -->
+        <aside class="panel" aria-labelledby="chapters-title">
+          <div class="panel-header">
+            <h2 id="chapters-title">Chapters</h2>
+          </div>
+          <div class="panel-body">
+            <ul class="chapter-list" id="chapterList" aria-live="polite" aria-label="Chapter list">
+              <!-- Intentionally empty — add chapters here later -->
+            </ul>
+          </div>
+        </aside>
+
+        <!-- CENTER: Latest Chapter (empty hero) -->
+        <section class="panel" aria-labelledby="latest-title">
+          <div class="panel-header">
+            <h2 id="latest-title">Latest Chapter</h2>
+          </div>
+          <div class="panel-body">
+            <div class="latest-card">
+              <div class="latest-hero" role="img" aria-label="Latest chapter preview (empty)"></div>
+              <!-- Intentionally no chapter content yet -->
+            </div>
+          </div>
+        </section>
+
+        <!-- RIGHT: Coming Soon (no tidbit content yet) -->
+        <aside class="panel" aria-labelledby="coming-title">
+          <div class="panel-header">
+            <h2 id="coming-title">Coming Soon</h2>
+          </div>
+          <div class="panel-body">
+            <div class="comingsoon">
+              <div class="coming-tidbit" aria-label="Next chapter tidbit (empty)"></div>
+              <!-- No preview text or media yet -->
+            </div>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="site-foot" role="contentinfo">
+        © <span id="year"></span> miricolors.net — All grayscale, all glass.
+      </footer>
+    </div>
+
+    <!-- Star menu modal (chapters/logs quick access; intentionally empty) -->
+    <div class="modal" id="starMenu" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="starTitle">
+      <div class="window">
+        <div class="window-titlebar">
+          <h3 class="window-title" id="starTitle">Quick Access</h3>
+          <div class="win-actions">
+            <button class="icon-btn" id="winMin" title="Minimize" aria-label="Minimize">▁</button>
+            <button class="icon-btn" id="winClose" title="Close" aria-label="Close">✕</button>
+          </div>
+        </div>
+        <div class="window-body">
+          <div class="tabs" role="tablist" aria-label="Quick access tabs">
+            <div class="tab" role="tab" aria-selected="true">Chapters</div>
+            <div class="tab" role="tab" aria-selected="false">Log</div>
+          </div>
+          <div class="columns">
+            <div class="well" aria-label="Chapters (empty)">
+              <!-- Intentionally empty -->
+            </div>
+            <div class="well" aria-label="Logs (empty)">
+              <!-- Intentionally empty -->
+            </div>
           </div>
         </div>
       </div>
-      <div class="mp3nav-wrap">
-        <nav class="mp3nav" aria-label="Primary">
-          <div class="mp3-shell">
-            <div class="mp3-gloss" aria-hidden="true"></div>
-            <a class="mp3-btn" href="#" data-nav="home"><span class="glyph" aria-hidden="true"></span>Home</a>
-            <a class="mp3-btn" href="#" data-nav="read"><span class="glyph" aria-hidden="true"></span>Read</a>
-            <a class="mp3-btn" href="#" data-nav="archive"><span class="glyph" aria-hidden="true"></span>Archive</a>
-            <a class="mp3-btn" href="#" data-nav="new"><span class="glyph" aria-hidden="true"></span>New Reader?</a>
-            <a class="mp3-btn" href="#" data-nav="map"><span class="glyph" aria-hidden="true"></span>Map</a>
-            <a class="mp3-btn" href="#" data-nav="log"><span class="glyph" aria-hidden="true"></span>Log</a>
+    </div>
+
+    <script>
+      // Year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Modal controls (star quick menu)
+      const starBtn = document.getElementById('starMenuBtn');
+      const modal = document.getElementById('starMenu');
+      const winClose = document.getElementById('winClose');
+      const winMin = document.getElementById('winMin');
+      let minimized = false;
+
+      function openModal() {
+        modal.setAttribute('aria-hidden', 'false');
+      }
+      function closeModal() {
+        modal.setAttribute('aria-hidden', 'true');
+      }
+      function toggleMin() {
+        const body = modal.querySelector('.window-body');
+        minimized = !minimized;
+        body.style.display = minimized ? 'none' : 'grid';
+      }
+
+      starBtn.addEventListener('click', openModal);
+      winClose.addEventListener('click', closeModal);
+      winMin.addEventListener('click', toggleMin);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+      });
+
+      // WebAudio twinkle system (no external files; grayscale theme preserved)
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      const ctx = AudioCtx ? new AudioCtx() : null;
+
+      // Count reloads via localStorage
+      const COUNTER_KEY = 'miricolors.reloads';
+      const TWINKLE_PACK_KEY = 'miricolors.twinklePack'; // changes each reload
+      let reloads = parseInt(localStorage.getItem(COUNTER_KEY) || '0', 10) + 1;
+      localStorage.setItem(COUNTER_KEY, String(reloads));
+      // Pick a twinkle pack each reload (so it changes)
+      const twinklePack = Math.floor(Math.random() * 5); // 0..4
+      localStorage.setItem(TWINKLE_PACK_KEY, String(twinklePack));
+
+      // Twinkle definitions: vary oscillator, envelope, intervals
+      function playTone({ freq=880, duration=0.14, type='sine', gain=0.12, start=0 }) {
+        if (!ctx) return;
+        const t0 = ctx.currentTime + start;
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = type;
+        o.frequency.value = freq;
+        g.gain.value = 0.0001;
+
+        // Soft XP/Vista-like glassy envelope
+        const atk = duration * 0.15;
+        const rel = duration * 0.35;
+        g.gain.setValueAtTime(0.0001, t0);
+        g.gain.exponentialRampToValueAtTime(gain, t0 + atk);
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + duration - rel);
+
+        o.connect(g); g.connect(ctx.destination);
+        o.start(t0);
+        o.stop(t0 + duration);
+      }
+
+      function playTwinkle() {
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+
+        const pack = parseInt(localStorage.getItem(TWINKLE_PACK_KEY) || '0', 10);
+        const base = [660, 740, 880, 990, 1110][pack % 5];
+        const type = ['sine', 'triangle', 'sine', 'triangle', 'sine'][pack % 5];
+
+        // 2–3 note glassy sparkle
+        playTone({ freq: base, duration: 0.12, type, gain: 0.10, start: 0.00 });
+        playTone({ freq: base * 1.25, duration: 0.11, type, gain: 0.08, start: 0.05 });
+        playTone({ freq: base * 1.5, duration: 0.10, type, gain: 0.07, start: 0.10 });
+      }
+
+      // Every 100th reload, unlock a short grayscale jingle (played on first interaction)
+      const jingleUnlocked = (reloads % 100 === 0);
+      let jinglePlayed = false;
+
+      function playJingle() {
+        if (!ctx || jinglePlayed) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        jinglePlayed = true;
+
+        // Simple arpeggio with XP-ting vibes; grayscale-safe (pure tones)
+        const now = ctx.currentTime + 0.02;
+        const notes = [523.25, 659.25, 783.99, 1046.5, 783.99, 659.25, 523.25]; // C-E-G-C' - G - E - C
+        notes.forEach((f, i) => {
+          playTone({ freq: f, duration: 0.14, type: 'sine', gain: 0.11, start: (i * 0.12) + (now - ctx.currentTime) });
+        });
+      }
+
+      // Bind twinkles to nav interactions
+      const navButtons = document.querySelectorAll('.nav-btn, .star-btn');
+      let hoverCooldown = false;
+
+      function hoverTwinkle() {
+        if (hoverCooldown) return;
+        hoverCooldown = true;
+        playTwinkle();
+        setTimeout(() => (hoverCooldown = false), 140); // light throttle
+      }
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('pointerenter', () => {
+          hoverTwinkle();
+          if (jingleUnlocked) playJingle(); // trigger jingle on first interaction after 100th reload
+        });
+        btn.addEventListener('click', () => {
+          playTwinkle();
+        });
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') playTwinkle();
+        });
+      });
+
+      // Optional: clicking anywhere near header also twinkles (subtle)
+      document.querySelector('header').addEventListener('pointermove', () => {
+        // Only very occasionally to avoid spam:
+        if (Math.random() < 0.02) hoverTwinkle();
+      });
+    </script>
+  </body>
+</html>
