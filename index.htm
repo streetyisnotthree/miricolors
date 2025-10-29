@@ -1,405 +1,398 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Miracles</title>
+<!doctype html>
+<html lang="en-US" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>miricolors.net</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Miricolors — a retro-modern, glassy XP/Vista-flavored webcomic hub." />
+    <meta name="theme-color" content="#f0f0f0" />
+    <meta name="color-scheme" content="light" />
 
-  <!-- Favicon: simple yellow star (inline SVG) -->
-  <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpolygon points='32,4 39,24 60,24 43,36 50,56 32,44 14,56 21,36 4,24 25,24' fill='%23FFD83D' stroke='%23E6B800' stroke-width='2'/%3E%3C/svg%3E" />
+    <!-- Icons (placeholders) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='100%25' height='100%25' fill='%23e6e6e6'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='34' fill='%23000'%3E★%3C/text%3E%3C/svg%3E" />
+    <style>
+      :root{
+        --bg-0:#ffffff;
+        --bg-1:#f5f5f5;
+        --bg-2:#eeeeee;
+        --bg-3:#e3e3e3;
+        --ink-0:#000000;
+        --ink-1:#333333;
+        --ink-2:#555555;
+        --ink-3:#777777;
 
-  <!-- Futuristic font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+        /* Glass gradients (grayscale) */
+        --glass-hi: rgba(255,255,255,0.75);
+        --glass-mid: rgba(240,240,240,0.55);
+        --glass-lo: rgba(220,220,220,0.35);
+        --glass-stroke: rgba(0,0,0,0.12);
 
-  <style>
-    :root{
-      --bg-1:#f5f5f7;
-      --bg-2:#ececef;
-      --panel:#ffffff;
-      --panel-edge:#d9d9de;
-      --text:#222;
-      --muted:#6b6b73;
-      --chrome-top:#fdfdfd;
-      --chrome-bottom:#e7e7ec;
-      --chrome-border:#bdbdc6;
-      --chrome-gloss:#ffffffcc;
-      --link:#333;
-      --link-hover:#000;
-      --shadow:0 12px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.08);
-    }
+        --shadow-soft: 0 10px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+        --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.65), inset 0 -1px 0 rgba(0,0,0,0.1);
 
-    /* 2000s/early 2010s desktop vibe */
-    html,body{
-      height:100%;
-      margin:0;
-      background:
-        radial-gradient(1200px 800px at 20% -10%, #ffffff 0%, var(--bg-1) 35%, var(--bg-2) 100%);
-      color:var(--text);
-      font-family:"Orbitron", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      letter-spacing:.2px;
-    }
+        --radius-lg: 16px;
+        --radius-md: 12px;
+        --radius-sm: 8px;
 
-    .wrap{
-      max-width: 980px;
-      margin: 40px auto 80px;
-      padding: 0 20px;
-    }
+        --xp-highlight: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.45) 42%, rgba(255,255,255,0.0) 100%);
+        --xp-panel: linear-gradient(180deg, var(--glass-hi) 0%, var(--glass-mid) 40%, var(--glass-lo) 100%);
+      }
 
-    /* Rounded banner with embedded logo */
-    header.banner{
-      background: linear-gradient(180deg, var(--chrome-top), var(--chrome-bottom));
-      border: 1px solid var(--chrome-border);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      position: relative;
-      padding: 18px 22px;
-    }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; }
+      body{
+        margin:0;
+        color:var(--ink-1);
+        font: 14px/1.4 "Trebuchet MS", Tahoma, Verdana, Segoe UI, system-ui, -apple-system, sans-serif;
+        background:
+          radial-gradient(80% 60% at 50% -10%, rgba(255,255,255,0.8), rgba(255,255,255,0)) no-repeat,
+          linear-gradient(135deg, #ffffff, #f2f2f2 35%, #eaeaea 70%, #f7f7f7);
+      }
 
-    header .row{
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
+      /* Top title bar (XP/Vista glass look) */
+      .topbar{
+        position: sticky;
+        top:0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        background: var(--xp-panel);
+        border-bottom: 1px solid var(--glass-stroke);
+        box-shadow: var(--shadow-soft);
+      }
+      .topbar-inner{
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 10px 16px;
+        display:flex;
+        align-items:center;
+        gap: 12px;
+      }
+      .logo{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        user-select:none;
+      }
+      .logo-badge{
+        width:28px;
+        height:28px;
+        border-radius: 6px;
+        background: linear-gradient(180deg, #ffffff 0%, #f1f1f1 60%, #dcdcdc 100%);
+        border:1px solid var(--glass-stroke);
+        box-shadow: var(--shadow-inset), 0 2px 8px rgba(0,0,0,0.08);
+        display:grid;
+        place-items:center;
+        color:#000;
+        font-weight:700;
+      }
+      .logo-title{
+        font-weight:700;
+        color:var(--ink-0);
+        letter-spacing: 0.3px;
+        text-shadow: 0 1px 0 rgba(255,255,255,0.65);
+      }
 
-    .logo{
-      display:flex;
-      align-items:center;
-      gap:16px;
-    }
+      /* MP3-style nav bar */
+      .mp3nav-wrap{
+        width:100%;
+        background: linear-gradient(180deg, #fbfbfb 0%, #efefef 60%, #e7e7e7 100%);
+        border-top: 1px solid rgba(255,255,255,0.7);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        box-shadow: var(--shadow-inset);
+      }
+      .mp3nav{
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 10px 16px 14px;
+        display:flex;
+        align-items:center;
+        gap: 10px;
+      }
+      .mp3-shell{
+        flex:1;
+        display:flex;
+        align-items:center;
+        gap: 8px;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #fefefe 0%, #f3f3f3 55%, #e6e6e6 100%);
+        border:1px solid var(--glass-stroke);
+        box-shadow: var(--shadow-soft), var(--shadow-inset);
+        position: relative;
+      }
+      .mp3-gloss{
+        pointer-events: none;
+        position: absolute;
+        left:8px; right:8px; top:6px;
+        height: 40%;
+        border-radius: 999px;
+        background: var(--xp-highlight);
+        filter: blur(0.2px);
+      }
+      .mp3-btn{
+        position: relative;
+        isolation: isolate;
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: linear-gradient(180deg, #ffffff 0%, #f4f4f4 55%, #e9e9e9 100%);
+        border:1px solid rgba(0,0,0,0.14);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset,
+                    0 -1px 0 rgba(0,0,0,0.04) inset,
+                    0 2px 6px rgba(0,0,0,0.08);
+        color: var(--ink-1);
+        text-decoration: none;
+        font-weight:600;
+        letter-spacing: 0.2px;
+        cursor: pointer;
+        transition: transform 80ms ease, filter 120ms ease, background 160ms ease;
+        user-select:none;
+      }
+      .mp3-btn:hover{
+        transform: translateY(-1px);
+        filter: brightness(1.03);
+      }
+      .mp3-btn:active{
+        transform: translateY(0);
+        filter: brightness(0.98);
+      }
+      .mp3-btn .glyph{
+        width: 16px; height:16px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 30% 30%, #fff, #e6e6e6 60%, #dcdcdc);
+        border: 1px solid rgba(0,0,0,0.1);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.8) inset,
+                    0 -1px 0 rgba(0,0,0,0.06) inset;
+      }
 
-    .logo img{
-      display:block;
-      height:64px;                /* Adjust if needed */
-      width:auto;
-      filter: drop-shadow(0 1px 0 #fff) drop-shadow(0 6px 10px rgba(0,0,0,.08));
-      user-select:none;
-      -webkit-user-drag:none;
-    }
+      .star-launcher{
+        margin-left:auto;
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding: 8px 12px;
+        border-radius: 12px;
+        background: linear-gradient(180deg, #ffffff 0%, #f3f3f3 55%, #e8e8e8 100%);
+        border:1px solid rgba(0,0,0,0.14);
+        box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset,
+                    0 -1px 0 rgba(0,0,0,0.04) inset,
+                    0 2px 6px rgba(0,0,0,0.08);
+        cursor:pointer;
+        color: var(--ink-1);
+        font-weight:600;
+      }
+      .star-launcher .star{
+        font-size:16px;
+        filter: drop-shadow(0 1px 0 rgba(255,255,255,0.6));
+      }
 
-    /* Time pill (top-right, XP/Vista gadget feel) */
-    .clock{
-      margin-left:auto;
-      padding:6px 12px;
-      border-radius: 14px;
-      border:1px solid var(--chrome-border);
-      background: linear-gradient(180deg,#ffffff,#ececf1);
-      color:#111;
-      font-weight: 600;
-      font-size: 12px;
-      letter-spacing: 1px;
-      box-shadow: inset 0 1px 0 var(--chrome-gloss);
-      min-width: 130px;
-      text-align:center;
-    }
+      /* Layout */
+      .container{
+        max-width: 1160px;
+        margin: 24px auto;
+        padding: 0 16px 56px;
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 18px;
+      }
+      @media (max-width: 980px){
+        .container{
+          grid-template-columns: 1fr;
+        }
+      }
 
-    /* MP3/iPod-style nav bar */
-    nav.navbar{
-      margin-top:14px;
-      background: linear-gradient(180deg, #f9f9fb 0%, #ededf2 55%, #e2e2ea 56%, #d8d8e2 100%);
-      border:1px solid #bdbdca;
-      border-radius: 28px;
-      box-shadow:
-        inset 0 2px 0 #fff,
-        inset 0 -2px 0 rgba(0,0,0,.06),
-        0 8px 18px rgba(0,0,0,.08);
-      padding: 6px;
-    }
+      .panel{
+        position: relative;
+        border-radius: var(--radius-lg);
+        background: var(--xp-panel);
+        border:1px solid var(--glass-stroke);
+        box-shadow: var(--shadow-soft), var(--shadow-inset);
+        overflow: clip;
+      }
+      .panel .panel-titlebar{
+        padding: 10px 14px;
+        font-weight:700;
+        color: var(--ink-0);
+        text-shadow: 0 1px 0 rgba(255,255,255,0.65);
+        border-bottom: 1px solid rgba(0,0,0,0.06);
+        background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(245,245,245,0.8));
+      }
+      .panel .panel-body{
+        padding: 16px;
+      }
 
-    .tabs{
-      display:flex;
-      gap:8px;
-      list-style:none;
-      padding:0;
-      margin:0;
-      justify-content:center;
-      align-items:center;
-    }
+      /* Center main panel */
+      .latest{
+        min-height: 380px;
+      }
+      .empty-note{
+        margin: 10px 0 0;
+        color: var(--ink-3);
+        font-style: italic;
+        background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(235,235,235,0.6));
+        border: 1px dashed rgba(0,0,0,0.18);
+        border-radius: var(--radius-md);
+        padding: 14px 12px;
+      }
 
-    .tabs a{
-      --btn-top:#ffffff;
-      --btn-bot:#dfe1e9;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 18px;
-      min-width:98px;
-      border-radius:20px;
-      border:1px solid #b3b7c6;
-      background: linear-gradient(180deg, var(--btn-top), var(--btn-bot));
-      color:var(--link);
-      text-decoration:none;
-      font-weight:700;
-      letter-spacing:.5px;
-      text-shadow:0 1px 0 #fff;
-      box-shadow:
-        inset 0 1px 0 #fff,
-        0 2px 0 #d2d5df,
-        0 6px 14px rgba(0,0,0,.08);
-      transition:
-        transform .08s ease,
-        box-shadow .12s ease,
-        background .2s ease,
-        color .2s ease;
-      position:relative;
-    }
+      /* Sidebar */
+      .sidebar .list{
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+        border-radius: var(--radius-md);
+        background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(236,236,236,0.6));
+        border:1px solid rgba(0,0,0,0.12);
+        box-shadow: var(--shadow-inset);
+        min-height: 120px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        color: var(--ink-3);
+        font-style: italic;
+      }
 
-    .tabs a:hover{
-      color:var(--link-hover);
-      transform: translateY(-1px);
-      box-shadow:
-        inset 0 1px 0 #fff,
-        0 3px 0 #c7cad5,
-        0 10px 18px rgba(0,0,0,.12);
-      background: linear-gradient(180deg, #ffffff, #e8eaf2);
-    }
+      /* Coming soon teaser box */
+      .teaser{
+        margin-top: 18px;
+      }
 
-    .tabs a:active{
-      transform: translateY(0);
-      box-shadow:
-        inset 0 1px 0 #fff,
-        0 2px 0 #c7cad5,
-        0 6px 12px rgba(0,0,0,.10);
-      background: linear-gradient(180deg, #f0f2f8, #dfe2ea);
-    }
+      /* Modal window (XP/Vista style) */
+      .modal-backdrop{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.2);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        display:none;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+      }
+      .modal{
+        width: min(720px, calc(100vw - 40px));
+        border-radius: 14px;
+        background: var(--xp-panel);
+        border:1px solid var(--glass-stroke);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+        position: relative;
+      }
+      .modal-titlebar{
+        display:flex;
+        align-items:center;
+        justify-content: space-between;
+        padding: 10px 12px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(240,240,240,0.85));
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        cursor: move;
+      }
+      .modal-title{
+        font-weight:700;
+        color: var(--ink-0);
+      }
+      .modal-actions{
+        display:flex;
+        gap: 8px;
+      }
+      .win-btn{
+        width: 28px; height: 22px;
+        border-radius: 5px;
+        background: linear-gradient(180deg, #ffffff, #eaeaea);
+        border:1px solid rgba(0,0,0,0.15);
+        box-shadow: var(--shadow-inset);
+        display:grid; place-items:center;
+        cursor:pointer;
+      }
+      .modal-content{
+        display:grid;
+        grid-template-columns: 200px 1fr;
+        min-height: 280px;
+      }
+      @media (max-width: 640px){
+        .modal-content{ grid-template-columns: 1fr; }
+      }
+      .modal-nav{
+        border-right:1px solid rgba(0,0,0,0.08);
+        padding: 12px;
+        background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(238,238,238,0.6));
+      }
+      .mod-tab{
+        display:block;
+        width:100%;
+        text-align:left;
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #ffffff, #f0f0f0);
+        border:1px solid rgba(0,0,0,0.12);
+        font-weight:600;
+        color: var(--ink-1);
+        cursor:pointer;
+      }
+      .mod-tab.active{
+        background: linear-gradient(180deg, #f7f7f7, #e9e9e9);
+      }
+      .mod-body{
+        padding: 16px;
+      }
+      .placeholder-box{
+        border-radius: 10px;
+        border: 1px dashed rgba(0,0,0,0.2);
+        min-height: 160px;
+        display:flex; align-items:center; justify-content:center;
+        color: var(--ink-3);
+        font-style: italic;
+        background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(235,235,235,0.55));
+      }
 
-    /* Content panes (white/grey, classic panel) */
-    main{
-      margin-top:22px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
-
-    .panel{
-      background: var(--panel);
-      border:1px solid var(--panel-edge);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-
-    .panel .titlebar{
-      background: linear-gradient(180deg, #fafafa, #ececf0);
-      border-bottom:1px solid #d6d6dd;
-      padding:10px 14px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-
-    .title{
-      font-weight: 800;
-      letter-spacing: 1px;
-      font-size: 14px;
-    }
-
-    .panel .body{
-      padding: 16px 18px 26px;
-      min-height: 80px;
-    }
-
-    /* Subtle separators for empty lists (no extra text) */
-    .empty{
-      min-height: 44px;
-      border: 2px dashed #e6e6ee;
-      border-radius: 12px;
-    }
-
-    /* Footnote under What's New! */
-    .coming-soon{
-      margin-top: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: .8px;
-      text-transform: uppercase;
-    }
-
-    /* Footer spacer */
-    footer{
-      margin-top: 24px;
-      color: var(--muted);
-      font-size: 12px;
-      text-align:center;
-    }
-
-    /* Improve focus for keyboard users */
-    .tabs a:focus{
-      outline: 2px solid #7aa2ff;
-      outline-offset: 2px;
-    }
-
-    /* Compact on small screens */
-    @media (max-width:640px){
-      .tabs a{ min-width: auto; padding:9px 14px; }
-      .logo img{ height:52px; }
-      .clock{ display:none; }
-    }
-  </style>
-</head>
-<body>
-  <div class="wrap">
-    <header class="banner" role="banner" aria-label="Miracles banner">
-      <div class="row">
-        <div class="logo" aria-label="Site logo">
-          <!-- Robust logo element: tries Logo2.png first, script adds fallbacks if needed -->
-          <picture>
-            <source srcset="assets/logo.svg" type="image/svg+xml">
-            <img id="siteLogo" src="Logo2.png" alt="Miracles logo" height="64" decoding="async" fetchpriority="high" />
-          </picture>
+      /* Tiny sparkle visuals on hover */
+      .sparkle {
+        position: absolute;
+        width: 8px; height: 8px;
+        pointer-events: none;
+        background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(220,220,220,0.9) 50%, rgba(180,180,180,0.0) 65%);
+        border-radius: 50%;
+        animation: sparkle-pop 420ms ease-out forwards;
+        filter: drop-shadow(0 0 2px rgba(255,255,255,0.9));
+        z-index: 2;
+      }
+      @keyframes sparkle-pop {
+        0% { transform: scale(0.2); opacity: 0; }
+        35%{ transform: scale(1); opacity: 1; }
+        100%{ transform: scale(0.2) translateY(-6px); opacity: 0; }
+      }
+      .visually-hidden{
+        position:absolute !important;
+        width:1px; height:1px;
+        padding:0; margin:-1px;
+        overflow:hidden; clip: rect(0,0,0,0);
+        white-space: nowrap; border:0;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top glass title bar -->
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="logo" aria-label="Site">
+          <div class="logo-badge">M</div>
+          <div>
+            <div class="logo-title">miricolors.net</div>
+            <div style="font-size:12px; color:var(--ink-3)">retro x glass x minimal</div>
+          </div>
         </div>
-
-        <div class="clock" id="clock" aria-live="polite">--:--:--</div>
       </div>
-
-      <nav class="navbar" aria-label="Primary">
-        <ul class="tabs" id="navTabs">
-          <li><a href="#" data-sound="0">Home</a></li>
-          <li><a href="#" data-sound="1">Read</a></li>
-          <li><a href="#" data-sound="2">About</a></li>
-          <li><a href="#" data-sound="3">Archive</a></li>
-          <li><a href="#" data-sound="4">Forums</a></li>
-        </ul>
-      </nav>
-    </header>
-
-    <main role="main">
-      <!-- What's New! (empty for now; only "Coming soon") -->
-      <section class="panel" aria-labelledby="whatsnew">
-        <div class="titlebar">
-          <div class="title" id="whatsnew">WHAT’S NEW!</div>
-        </div>
-        <div class="body">
-          <div class="empty" aria-hidden="true"></div>
-          <div class="coming-soon">Coming soon</div>
-        </div>
-      </section>
-
-      <!-- Chapters (no entries yet) -->
-      <section class="panel" aria-labelledby="chapters">
-        <div class="titlebar">
-          <div class="title" id="chapters">CHAPTERS</div>
-        </div>
-        <div class="body">
-          <div class="empty" aria-hidden="true"></div>
-        </div>
-      </section>
-    </main>
-
-    <footer aria-hidden="true"> </footer>
-  </div>
-
-  <script>
-    /* Clock (digital, updates each second) */
-    const clockEl = document.getElementById('clock');
-    function pad(n){ return String(n).padStart(2,'0'); }
-    function tick(){
-      const d = new Date();
-      const hh = pad(d.getHours()), mm = pad(d.getMinutes()), ss = pad(d.getSeconds());
-      clockEl.textContent = `${hh}:${mm}:${ss}`;
-    }
-    tick();
-    setInterval(tick, 1000);
-
-    /* Star/twinkle/sparkle sounds (distinct per tab) */
-    const AudioCtx = window.AudioContext || window.webkitAudioContext;
-    const audio = new AudioCtx();
-    let unlocked = false;
-
-    // On first interaction, resume context (autoplay policy)
-    const unlock = () => {
-      if (!unlocked && audio.state !== 'running') {
-        audio.resume().then(() => unlocked = true).catch(()=>{});
-      }
-    };
-    window.addEventListener('pointerdown', unlock, { once: true });
-    window.addEventListener('keydown', unlock, { once: true });
-
-    function burst(freq=1500, t=audio.currentTime, dur=0.18, gain=0.12, type='sine'){
-      const o = audio.createOscillator();
-      const g = audio.createGain();
-      o.type = type;
-      o.frequency.setValueAtTime(freq, t);
-      o.frequency.exponentialRampToValueAtTime(freq*1.8, t + dur*0.6);
-      g.gain.setValueAtTime(0.0001, t);
-      g.gain.exponentialRampToValueAtTime(gain, t + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-      o.connect(g).connect(audio.destination);
-      o.start(t);
-      o.stop(t + dur + 0.02);
-    }
-
-    function tinkle(seq=[], base=audio.currentTime){
-      // quick shimmering triad/arpeggio
-      let offset = 0;
-      for(const {f, d=0.16, g=0.12, w='sine'} of seq){
-        burst(f, base + offset, d, g, w);
-        offset += d * 0.55;
-      }
-    }
-
-    // Five distinct sparkle signatures
-    const signatures = [
-      // Home: bright quick triple
-      [{f:1400},{f:1850,d:0.14,g:0.10},{f:2300,d:0.12,g:0.09,w:'triangle'}],
-      // Read: soft up-gliss
-      [{f:1100,d:0.18,g:0.10},{f:1600,d:0.16,g:0.09},{f:2100,d:0.14,g:0.08,w:'triangle'}],
-      // About: glassy two-tone + ping
-      [{f:1700,d:0.20,g:0.10,w:'triangle'},{f:1200,d:0.12,g:0.08},{f:2400,d:0.10,g:0.07}],
-      // Archive: twinkle cluster
-      [{f:1000,d:0.12,g:0.09},{f:1400,d:0.12,g:0.09},{f:2000,d:0.10,g:0.08},{f:2600,d:0.10,g:0.07}],
-      // Forums: descending sparkle
-      [{f:2200,d:0.16,g:0.10},{f:1700,d:0.14,g:0.09},{f:1300,d:0.12,g:0.08}]
-    ];
-
-    function playSparkle(index){
-      const base = audio.currentTime + 0.01;
-      const seq = signatures[index % signatures.length];
-      tinkle(seq, base);
-    }
-
-    // Hook hover (mouseenter) on each tab
-    const tabs = document.querySelectorAll('#navTabs a');
-    tabs.forEach(a=>{
-      a.addEventListener('mouseenter', e=>{
-        unlock();             // ensure context is running
-        const idx = Number(a.dataset.sound||0);
-        playSparkle(idx);
-      }, {passive:true});
-    });
-
-    // Optional: resume context if user hovers before click (best-effort)
-    window.addEventListener('mousemove', unlock, { once:true, passive:true });
-  </script>
-
-  <!-- Robust logo fallback loader (keeps UI identical, fixes path/case issues on GitHub Pages) -->
-  <script>
-    (() => {
-      const imgEl = document.getElementById('siteLogo');
-      if (!imgEl) return;
-
-      const candidates = [
-        'Logo2.png','logo2.png',
-        'logo.png','Logo.png',
-        'assets/logo.png','assets/Logo.png','assets/logo.svg',
-        'images/logo.png','images/Logo.png','images/logo.svg',
-        'img/logo.png','img/Logo.png','logo.svg'
-      ];
-
-      function tryLoad(i){
-        if (i >= candidates.length) return;
-        const url = new URL(candidates[i], document.baseURI).toString();
-        const test = new Image();
-        test.onload = () => { imgEl.src = url; };
-        test.onerror = () => tryLoad(i + 1);
-        // cache-bust only on probe to avoid sticky 404s
-        test.src = url + (url.includes('?') ? '&' : '?') + 'probe=' + Date.now();
-      }
-
-      imgEl.addEventListener('error', () => tryLoad(0), { once:true });
-    })();
-  </script>
-</body>
-</html>
+      <div class="mp3nav-wrap">
+        <nav class="mp3nav" aria-label="Primary">
+          <div class="mp3-shell">
+            <div class="mp3-gloss" aria-hidden="true"></div>
+            <a class="mp3-btn" href="#" data-nav="home"><span class="glyph" aria-hidden="true"></span>Home</a>
+            <a class="mp3-btn" href="#" data-nav="read"><span class="glyph" aria-hidden="true"></span>Read</a>
+            <a class="mp3-btn" href="#" data-nav="archive"><span class="glyph" aria-hidden="true"></span>Archive</a>
+            <a class="mp3-btn" href="#" data-nav="new"><span class="glyph" aria-hidden="true"></span>New Reader?</a>
+            <a class="mp3-btn" href="#" data-nav="map"><span class="glyph" aria-hidden="true"></span>Map</a>
+            <a class="mp3-btn" href="#" data-nav="log"><span class="glyph" aria-hidden="true"></span>Log</a>
